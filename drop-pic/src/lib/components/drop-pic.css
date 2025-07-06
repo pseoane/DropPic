@@ -1,0 +1,293 @@
+.main-container {
+  font-family: sans-serif;
+}
+
+label {
+  margin: 0.5rem 0;
+}
+
+input, select {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  background-color: #e8e2d9;
+  color: black;
+  font-size: 1.1rem;
+}
+
+input::placeholder {
+  color: #b0b0b0; /* Light gray color */
+}
+
+.dropzone {
+  min-height: 10rem;
+  border: dashed 1px #979797;
+  background-color: #e8e2d9;
+  border-radius: 0.5rem;
+  display: flex;
+}
+
+.dropzone__empty {
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  color: #1c1c1b;
+  width: 100%;
+  height: 100%;
+  position: relative; /* So that the "drop the file here" modal attaches to the dropzone */
+}
+
+.dropzone-icon-container {
+  width: 30px;
+  height: 30px;
+  position: relative;
+}
+
+.dropzone-browse-btn {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: #e8e2d9;
+  cursor: pointer;
+  border: #1c1c1b solid 1px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.default-file-browser {
+  height: 0;
+  width: 0;
+  top: 0;
+  position: absolute;
+  opacity: 0;
+}
+
+.dropzone-browse-btn:hover {
+  background-color: #1c1c1b;
+  color: #e8e2d9;
+  border: #e8e2d9 solid 1px;
+}
+
+.drop-it-msg {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.5rem;
+  background-color: black;
+  position: absolute;
+  opacity: 90%;
+  z-index: 1000;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.images-preview {
+  min-height: 10rem;
+  border: dashed 1px #979797;
+  background-color: #e8e2d9;
+  border-radius: 0.5rem;
+  display: flex;
+  color: #1c1c1b;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  flex-wrap: wrap;
+  position: relative;
+  width: 100%;
+}
+
+.img-preview-container {
+  width: 7rem;
+  height: 7rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  overflow: visible;
+  position: relative;
+  cursor: pointer;
+}
+
+.image-preview__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+.dragging-icon {
+  width: 7rem;
+  height: 7rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  /*overflow: hidden;*/
+  position: fixed;
+  cursor: pointer;
+  background-color: red;
+  visibility: hidden;
+}
+
+.images-preview__drag-hint {
+  opacity: 0.8;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.img-preview-container.picked {
+  opacity: 0;
+}
+
+.first-image {
+  width: 10rem;
+  height: 10rem;
+  border: 3px solid #FFD700;
+}
+
+.img-preview-container__add-btn {
+  border: 2px dashed #2c3e50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.img-preview-container__add-btn:hover {
+  background-color: #1c1c1b;
+  color: white;
+}
+
+.img-preview-container__remove-btn {
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background-color: #e8e2d9;
+  color: #d1392e;
+  border: 2px #d1392e solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: 300;
+  margin: auto;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.img-preview-container__remove-btn:hover {
+  background-color: #d1392e;
+  color: #e8e2d9;
+  border: none;
+}
+
+.img-preview-container__index-indicator {
+  height: 2rem;
+  width: 2rem;
+  position: absolute;
+  bottom: -0.5rem;
+  right: -0.5rem;
+  background-color: #e8e2d9;
+  color: black;
+  border: 2px black solid;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: 300;
+  margin: auto;
+}
+
+.img-preview-container__index-indicator.picked {
+  color: red;
+}
+
+.img-preview-container__loading {
+  width: 100%;
+  height: 100%;
+  background: #1C1C1B;
+  background: linear-gradient(110deg,rgba(28, 28, 27, 1) 12%, rgba(38, 38, 38, 1) 18%, rgba(28, 28, 27, 1) 33%);
+  animation:1.5s shine linear infinite;
+  background-size: 200% 100%;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+
+@keyframes shine {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
+.form-buttons-container {
+  gap: 1rem;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 100%;
+}
+
+.form-buttons-container:hover button:not(:hover) {
+  opacity: 0.2;
+}
+
+.delete-button {
+  border: #d1392e 2px solid;
+  border-radius: 25px;
+  color: #d1392e;
+  background-color: #1c1c1b;
+  cursor: pointer;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+  text-decoration: none;
+}
+
+#save {
+  transition: background-color 0.3s ease, color 0.3s ease, opacity 0.3s ease;
+}
+
+.delete-button:hover {
+  color: white;
+  background-color: #d1392e;
+}
+
+@media (min-width: 40rem) {
+  .form-buttons-container {
+    float: right;
+    gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+  }
+
+  .img-preview-container {
+    height: 12rem;
+    width: 12rem;
+  }
+
+  .dragging-icon {
+    height: 12rem;
+    width: 12rem;
+  }
+
+  .first-image {
+    width: 16rem;
+    height: 16rem;
+    border: 3px solid #FFD700;
+  }
+}
+

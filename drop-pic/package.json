@@ -1,0 +1,15 @@
+{
+  "name": "drop-pic",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "^20.0.6",
+    "@angular/core": "^20.0.6",
+    "@angular/forms": "^20.0.6",
+    "@angular/compiler": "^20.0.6",
+    "rxjs": "^7.8.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
