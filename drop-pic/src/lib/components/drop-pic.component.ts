@@ -1,6 +1,6 @@
 import {
   Component,
-  ElementRef,
+  ElementRef, Input,
   input,
   OnDestroy,
   OnInit,
@@ -12,14 +12,15 @@ import {
 import {DropPicService} from "../services/drop-pic.service";
 import {DropAreaDirective} from "../directives/drop-area.directive";
 import {DraggableDirective} from "../directives/draggable.directive";
-import {NgOptimizedImage} from "@angular/common";
+import {NgOptimizedImage, NgStyle} from "@angular/common";
 
 @Component({
   selector: 'drop-pic',
   imports: [
     DropAreaDirective,
     DraggableDirective,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgStyle
   ],
   templateUrl: 'drop-pic.component.html',
   standalone: true,
@@ -34,6 +35,185 @@ export class DropPicComponent implements OnInit, OnDestroy {
   @ViewChild('draggingIcon') draggingIcon!: ElementRef
   @ViewChild('draggingIconImage') draggingIconImage!: ElementRef
   @ViewChildren('imagePreviewContainer') imageContainers!: QueryList<ElementRef>
+
+  /**
+   * File formats accepted by the input
+   */
+  @Input()
+  acceptedFileFormats: string = ".jpg,.jpeg,.webp,.png,.heic"
+
+  /**
+   * Text to indicate that images can be dropped into the component.
+   */
+  @Input()
+  dropImagesHereText: string = "Drop images here";
+
+  /**
+   * Background of the text to indicate that images can be selected manually.
+   */
+  @Input()
+  dropImagesHereBackgroundColor: string | undefined;
+
+  /**
+   * Color of the text to indicate that images can be selected manually.
+   */
+  @Input()
+  dropImagesHereTextColor: string | undefined;
+
+  /**
+   * Style of the text to indicate that images can be selected manually.
+   */
+  @Input()
+  dropImagesHereBorder: string | undefined;
+
+  /**
+   * Text to indicate that images can be dragged into the component.
+   */
+  @Input()
+  dragImagesHereText: string = "Drag images here";
+
+  /**
+   * Text to indicate that images can be selected manually.
+   */
+  @Input()
+  selectImagesManuallyText: string = "Or select them manually";
+
+  /**
+   * Text to indicate that images can be reordered by dragging.
+   */
+  @Input()
+  dragImageToReorderHintText: string = "Drag to reorder";
+
+  /**
+   * Color of the text to indicate that images can be reordered by dragging.
+   */
+  @Input()
+  dragImageToReorderHintTextColor: string | undefined = undefined;
+
+  /**
+   * Background color of the text to indicate that images can be reordered by dragging.
+   * This is applied when the user hovers over the text.
+   */
+  @Input()
+  dragImageToReorderHintTextBackgroundColor: string | undefined = undefined;
+
+  /**
+   * True if the component should display the image number on each image preview.
+   */
+  @Input()
+  shallDisplayImageNumber: boolean = true;
+
+  /**
+   * True if the image previews shall include a remove button
+   */
+  @Input()
+  shallDisplayRemoveButton: boolean = true;
+
+  /**
+   * True if the component should highlight the first image in the list.
+   * This is useful for indicating the main image in a gallery.
+   */
+  @Input()
+  shallHighlightFirstImage: boolean = true;
+
+  /**
+   * The color of the background of the drop area.
+   */
+  @Input()
+  backgroundColor: string | undefined = undefined;
+
+  /**
+   * The color of the text inside the drop area.
+   */
+  @Input()
+  textColor: string | undefined = undefined;
+
+  /**
+   * The style of the border of the drop area.
+   */
+  @Input()
+  border: string | undefined = undefined;
+
+  /**
+   * The style of the background of the button to select images manually.
+   */
+  @Input()
+  selectImagesManuallyButtonBackgroundColor: string | undefined = undefined;
+
+  /**
+   * The style of the hover background of the button to select images manually.
+   * This is applied when the user hovers over the button.
+   */
+  @Input()
+  selectImagesManuallyButtonBackgroundColorOnHover: string | undefined = undefined;
+
+  /**
+   * The color of the text inside the button to select images manually.
+   */
+  @Input()
+  selectImagesManuallyButtonTextColor: string | undefined = undefined;
+
+  /**
+   * The style of the hover text inside the button to select images manually.
+   * This is applied when the user hovers over the button.
+   */
+  @Input()
+  selectImagesManuallyButtonTextColorOnHover: string | undefined = undefined;
+
+  /**
+   * The style of the border of the button to select images manually.
+   */
+  @Input()
+  selectImagesManuallyButtonBorder: string | undefined = undefined;
+
+  /**
+   * The style of the hover border of the button to select images manually.
+   * This is applied when the user hovers over the button.
+   */
+  @Input()
+  selectImagesManuallyButtonBorderOnHover: string | undefined = undefined;
+
+  /**
+   * The style of the border of the button to add more images (+ button).
+   */
+  @Input()
+  addMoreImagesButtonBorder: string | undefined = undefined;
+
+  /**
+   * The style of the border of the button to add more images when hovered (+ button).
+   */
+  @Input()
+  addMoreImagesButtonBorderOnHover: string | undefined = undefined;
+
+  /**
+   * Background color of the button to add more images (+ button)
+   */
+  @Input()
+  addMoreImagesButtonBackgroundColor: string | undefined = undefined;
+
+  /**
+   * Background color of the button to add more images when hovered (+ button)
+   */
+  @Input()
+  addMoreImagesButtonBackgroundColorOnHover: string | undefined = undefined;
+
+  /**
+   * Text color of the button to add more images (+ button)
+   */
+  @Input()
+  addMoreImagesButtonTextColor: string | undefined = undefined;
+
+  /**
+   * Text color of the button to add more images when hovered (+ button)
+   */
+  @Input()
+  addMoreImagesButtonTextColorOnHover: string | undefined = undefined;
+
+  /**
+   * If the first image shall be highlighted, this property specifies the
+   */
+  @Input()
+  highlightedImageBorder: string | undefined = undefined;
 
   constructor(private picturesSrv: DropPicService, private renderer: Renderer2) {
 
