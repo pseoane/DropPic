@@ -29,7 +29,7 @@ import {NgOptimizedImage, NgStyle} from "@angular/common";
 export class DropPicComponent implements OnInit, OnDestroy {
   fileBeingDragged = false;
   imagePreviews: string[] = []
-  loadingImages: number[] = []
+  numberOfImagesBeingLoaded: number[] = []
   pickedFileIndex = -1
 
   @ViewChild('draggingIcon') draggingIcon!: ElementRef
@@ -52,13 +52,13 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * Background of the text to indicate that images can be selected manually.
    */
   @Input()
-  dropImagesHereBackgroundColor: string | undefined;
+  dropImagesHereBackgroundColor: string  = "#000000";
 
   /**
    * Color of the text to indicate that images can be selected manually.
    */
   @Input()
-  dropImagesHereTextColor: string | undefined;
+  dropImagesHereTextColor: string = "#ffffff";
 
   /**
    * Style of the text to indicate that images can be selected manually.
@@ -88,14 +88,14 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * Color of the text to indicate that images can be reordered by dragging.
    */
   @Input()
-  dragImageToReorderHintTextColor: string | undefined = undefined;
+  dragImageToReorderHintTextColor: string = "#ffffff";
 
   /**
    * Background color of the text to indicate that images can be reordered by dragging.
    * This is applied when the user hovers over the text.
    */
   @Input()
-  dragImageToReorderHintTextBackgroundColor: string | undefined = undefined;
+  dragImageToReorderHintTextBackgroundColor: string = "#000000";
 
   /**
    * True if the component should display the image number on each image preview.
@@ -120,19 +120,19 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * The color of the background of the drop area.
    */
   @Input()
-  backgroundColor: string | undefined = undefined;
+  backgroundColor: string = "#e8e2d9";
 
   /**
    * The color of the text inside the drop area.
    */
   @Input()
-  textColor: string | undefined = undefined;
+  textColor: string = "#1c1c1b";
 
   /**
    * The style of the border of the drop area.
    */
   @Input()
-  border: string | undefined = undefined;
+  border: string = "dashed 1px #979797";
 
   /**
    * The style of the background of the button to select images manually.
@@ -177,7 +177,7 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * The style of the border of the button to add more images (+ button).
    */
   @Input()
-  addMoreImagesButtonBorder: string | undefined = undefined;
+  addMoreImagesButtonBorder: string = "2px dashed #2c3e50";
 
   /**
    * The style of the border of the button to add more images when hovered (+ button).
@@ -195,7 +195,7 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * Background color of the button to add more images when hovered (+ button)
    */
   @Input()
-  addMoreImagesButtonBackgroundColorOnHover: string | undefined = undefined;
+  addMoreImagesButtonBackgroundColorOnHover: string = "#1c1c1b";
 
   /**
    * Text color of the button to add more images (+ button)
@@ -207,13 +207,27 @@ export class DropPicComponent implements OnInit, OnDestroy {
    * Text color of the button to add more images when hovered (+ button)
    */
   @Input()
-  addMoreImagesButtonTextColorOnHover: string | undefined = undefined;
+  addMoreImagesButtonTextColorOnHover: string = "#ffffff";
 
   /**
-   * If the first image shall be highlighted, this property specifies the
+   * If true, the component will display a loading indicator for each of the images that are being loaded.
+   * This is useful for showing the user that images are being processed.
    */
   @Input()
-  highlightedImageBorder: string | undefined = undefined;
+  shallDisplayLoadingIndicator: boolean = true;
+
+  /**
+   * If the first image shall be highlighted, this property specifies the border style of the highlighted image.
+   */
+  @Input()
+  highlightedImageBorder: string = "2px solid #FFD700";
+
+  /**
+   * The background of the loading indicator.
+   * This is a CSS linear gradient that will be applied to the loading indicator.
+   */
+  @Input()
+  loadingIndicatorBackground: string = "linear-gradient(110deg, rgba(28, 28, 27, 1) 12%, rgba(38, 38, 38, 1) 18%, rgba(28, 28, 27, 1) 33%)"
 
   constructor(private picturesSrv: DropPicService, private renderer: Renderer2) {
 
@@ -222,6 +236,9 @@ export class DropPicComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.picturesSrv.clearFiles() // In case some previous files were in the server due to some error
     this.picturesSrv.previewUrls$.subscribe(previews => this.imagePreviews = previews)
+    this.picturesSrv.numberOfImagesBeingLoaded$.subscribe(numberOfImagesBeingLoaded => {
+      this.numberOfImagesBeingLoaded = Array.from({ length: numberOfImagesBeingLoaded })
+    })
   }
 
   ngOnDestroy(): void {
@@ -246,7 +263,11 @@ export class DropPicComponent implements OnInit, OnDestroy {
     const fileList = event.dataTransfer?.files;
     if (!fileList) return;
     for (const file of Array.from(fileList)) {
-      this.picturesSrv.addFile(file).then()
+      try {
+        this.picturesSrv.addFile(file).then();
+      } catch(error) {
+        console.error("Error while adding file " + file.name + ": "  + error)
+      }
     }
   }
 
@@ -268,7 +289,11 @@ export class DropPicComponent implements OnInit, OnDestroy {
     const input = event.target as HTMLInputElement;
     if (input.files) {
       for (const file of Array.from(input.files)) {
-        this.picturesSrv.addFile(file);
+        try {
+          this.picturesSrv.addFile(file).then();
+        } catch(error) {
+          console.error("Error while adding file " + file.name + ": "  + error)
+        }
       }
     }
   }

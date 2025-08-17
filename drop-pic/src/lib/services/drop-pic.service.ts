@@ -9,18 +9,18 @@ export class DropPicService {
   private _imagePreviewUrls$ = new BehaviorSubject<string[]>([])
   private _numberOfImagesBeingLoaded$ = new BehaviorSubject<number>(0)
   private _imagePreviewUrls: string[] = []
+  private _numberOfImagesBeingLoaded: number = 0
   private _files: File[] = []
 
   constructor() { }
 
   /**
-   * Adds a new file to the service and loads its preview.
+   * Adds a new file to the service and loads its preview. If the preview load fails, the file won't get added.
    * @param newFile
    */
   async addFile(newFile: File) {
-    console.log('Adding file:', newFile.name)
+    await this.loadPreview(newFile)
     this._files.push(newFile)
-    this.loadPreview(newFile)
   }
 
   /**
@@ -59,6 +59,35 @@ export class DropPicService {
   }
 
   /**
+   * Increases the number of images that are currently being loaded. This is useful for showing loading indicators.
+   * @param increaseAmount The amount by which to increase the count. Defaults to 1.
+   */
+  increaseNumberOfImagesBeingLoaded(increaseAmount: number = 1) {
+    this._numberOfImagesBeingLoaded += increaseAmount
+    this._numberOfImagesBeingLoaded$.next(this._numberOfImagesBeingLoaded)
+  }
+
+  /**
+   * Decreases the number of images that are currently being loaded. This is useful for showing loading indicators.
+   * @param decreaseAmount The amount by which to decrease the count. Defaults to 1.
+   */
+  decreaseNumberOfImagesBeingLoaded(decreaseAmount: number = 1) {
+    this._numberOfImagesBeingLoaded -= decreaseAmount
+    if (this._numberOfImagesBeingLoaded < 0) {
+      this._numberOfImagesBeingLoaded = 0
+    }
+    this._numberOfImagesBeingLoaded$.next(this._numberOfImagesBeingLoaded)
+  }
+
+  /**
+   * Resets the number of images being loaded to zero. This is useful when you want to reset the loading state.
+   */
+  resetNumberOfImagesBeingLoaded() {
+    this._numberOfImagesBeingLoaded = 0
+    this._numberOfImagesBeingLoaded$.next(this._numberOfImagesBeingLoaded)
+  }
+
+  /**
    * Returns an observable that emits the current image preview URLs.
    */
   get previewUrls$(): Observable<string[]> {
@@ -66,7 +95,8 @@ export class DropPicService {
   }
 
   /**
-   * Returns an observable that emits the number of images currently being loaded.
+   * Returns an observable that emits the current number of images that are being loaded. Useful for showing loading
+   * indicators.
    */
   get numberOfImagesBeingLoaded$(): Observable<number> {
     return this._numberOfImagesBeingLoaded$.asObservable()
@@ -79,13 +109,18 @@ export class DropPicService {
     return [...this._files]
   }
 
-  private loadPreview(file: File) {
-    console.log('Loading preview for file:', file.name)
-    const reader = new FileReader()
-    reader.onload = () => {
-      this.addPreview(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+  private async loadPreview(file: File) {
+    const dataUrl = await this.readFileAsDataURL(file)
+    this.addPreview(dataUrl)
+  }
+
+  private readFileAsDataURL(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (err) => reject(err)
+      reader.readAsDataURL(file)
+    })
   }
 
   private addPreview(preview: string) {

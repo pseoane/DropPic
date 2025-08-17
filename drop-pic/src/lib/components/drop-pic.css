@@ -12,6 +12,7 @@
   --add-more-images-btn-hover-border: var();
   --add-more-images-btn-border: var();
   --highlighted-image-border: var();
+  --loading-indicator-background: var();
 }
 
 .main-container {
@@ -88,11 +89,9 @@ input::placeholder {
   width: 100%;
   height: 100%;
   border-radius: 0.5rem;
-  background-color: black;
   position: absolute;
   opacity: 90%;
   z-index: 1000;
-  color: white;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -101,10 +100,8 @@ input::placeholder {
 .images-preview {
   min-height: 10rem;
   border: dashed 1px #979797;
-  background-color: #e8e2d9;
   border-radius: 0.5rem;
   display: flex;
-  color: #1c1c1b;
   align-items: center;
   justify-content: center;
   padding: 1rem;
@@ -145,8 +142,6 @@ input::placeholder {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: black;
-  color: white;
   text-align: center;
   display: flex;
   align-items: center;
@@ -162,11 +157,11 @@ input::placeholder {
 .first-image {
   width: 10rem;
   height: 10rem;
-  border: 3px solid #FFD700;
+  border: var(--highlighted-image-border);
 }
 
 .img-preview-container__add-btn {
-  border: var(--add-more-images-btn-border, 2px dashed #2c3e50);
+  border: var(--add-more-images-btn-border);
   background-color: var(--add-more-images-btn-background-color, inherit);
   color: var(--add-more-images-btn-color, inherit);
   display: flex;
@@ -179,8 +174,8 @@ input::placeholder {
 }
 
 .img-preview-container__add-btn:hover {
-  background-color: var(--add-more-images-btn-hover-background-color, #1c1c1b);
-  color: var(--add-more-images-btn-hover-color, white);
+  background-color: var(--add-more-images-btn-hover-background-color);
+  color: var(--add-more-images-btn-hover-color);
   border: var(--add-more-images-btn-hover-border, inherit);
 }
 
@@ -235,9 +230,8 @@ input::placeholder {
 .img-preview-container__loading {
   width: 100%;
   height: 100%;
-  background: #1C1C1B;
-  background: linear-gradient(110deg,rgba(28, 28, 27, 1) 12%, rgba(38, 38, 38, 1) 18%, rgba(28, 28, 27, 1) 33%);
-  animation:1.5s shine linear infinite;
+  animation: 1.5s shine linear infinite;
+  background: var(--loading-indicator-background);
   background-size: 200% 100%;
   object-fit: cover;
   border-radius: 0.5rem;

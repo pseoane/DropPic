@@ -1,17 +1,17 @@
 <div (draggingOver)="onDragOver($event)" (elementDropped)="onElementDropped($event)" appDropArea class="main-container">
   <input type="file" class="default-file-browser" id="fileDropRef" multiple [accept]="acceptedFileFormats" (change)="onFileSelected($event)">
-  @if (imagePreviews.length > 0 || loadingImages.length > 0) {
+  @if (imagePreviews.length > 0 || numberOfImagesBeingLoaded.length > 0) {
     <div
       class="dropzone images-preview"
-      [style.background-color]="backgroundColor || null"
-      [style.color]="textColor || null"
-      [style.border]="border || null"
+      [style.background-color]="backgroundColor"
+      [style.color]="textColor"
+      [style.border]="border"
     >
       @if (fileBeingDragged) {
         <div
           class="drop-it-msg"
-          [style.background-color]="dropImagesHereBackgroundColor || null"
-          [style.color]="dropImagesHereTextColor || null"
+          [style.background-color]="dropImagesHereBackgroundColor"
+          [style.color]="dropImagesHereTextColor"
           [style.border]="dropImagesHereBorder || null"
         >
           {{dropImagesHereText}}
@@ -20,8 +20,8 @@
       <div #draggingIcon class="dragging-icon" draggable="true" appDraggable>
         <div
           class="images-preview__drag-hint"
-          [style.background-color]="dragImageToReorderHintTextBackgroundColor || null"
-          [style.color]="dragImageToReorderHintTextColor || null"
+          [style.background-color]="dragImageToReorderHintTextBackgroundColor"
+          [style.color]="dragImageToReorderHintTextColor"
         >
           {{dragImageToReorderHintText}}
         </div>
@@ -48,6 +48,18 @@
           }
           <img [src]="imageUrl" alt="" draggable="false" class="image-preview__image">
         </div>
+      }
+      @if(shallDisplayLoadingIndicator) {
+        @for(_ of numberOfImagesBeingLoaded; track $index) {
+          <div class="img-preview-container">
+            <div
+              class="img-preview-container__loading"
+              [ngStyle]="{
+                '--loading-indicator-background': loadingIndicatorBackground
+              }"
+            ></div>
+          </div>
+        }
       }
       <label
         class="img-preview-container img-preview-container__add-btn"
