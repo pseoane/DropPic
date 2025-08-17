@@ -1,6 +1,6 @@
 {
   "name": "drop-pic",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,18 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
+  "private": false,
+  "license": "MIT",
+  "repository": {
+    "url": "https://github.com/pseoane/DropPic",
+    "type": "git"
+  },
+  "author": {
+    "name": "Paulo Seoane Davila",
+    "email": "pseoanedavila@gmail.com",
+    "url": "www.linkedin.com/in/paulo-seoane"
+  },
+  "keywords": ["image preview", "dropzone", "image upload", "image drag and drop", "angular"],
   "dependencies": {
     "@angular/common": "^20.0.6",
     "@angular/compiler": "^20.0.6",

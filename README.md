@@ -20,15 +20,14 @@ This library exposes two main entities:
 ## Installation
 
 1. Install the package and its dependencies:
-   ```bash
-   npm install
-   ```
+ ```bash
+ npm install drop-pic
+ ```
 
 2. Import the component and service into your Angular project:
-   ```typescript
-   import { DropPicComponent } from 'path-to-drop-pic/drop-pic.component';
-   import { DropPicService } from 'path-to-drop-pic/drop-pic.service';
-   ```
+ ```typescript
+ import {DropPicComponent, DropPicService} from 'drop-pic'
+ ```
 
 ## Usage
 
